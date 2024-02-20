@@ -1,1 +1,82 @@
-# PS-Showcase
+#Powershell-Showcase
+
+This showcase is to demonstrate two scripts that would assist and streamline the hardware reimaging process
+
+First, the script used to pull the hardware ID .CSV data to manage the device via Microsoft Auto Pilot Process
+
+Second, a System information collection script for management of hardware resources(needing to upgrade RAM or SSD) and for documentation purposes.
+
+
+Both very helpful in the Provisioning process for an IT specialist
+
+
+------- Hardware Identification pull for Microsoft AutoPilot
+
+# Set TLS Protocol Version to Tls 1.2
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+
+# Create a new directory at C:\HWID
+New-Item -Type Directory -Path "C:\HWID"
+
+# Change the current location to C:\HWID
+Set-Location -Path "C:\HWID"
+
+# Add the Scripts directory to the system's Path environment variable
+$env:Path += ";C:\Program Files\WindowsPowerShell\Scripts"
+
+# Set the execution policy for the current session to RemoteSigned
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy RemoteSigned
+
+# Install the NuGet provider for PowerShellGet
+Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force
+
+# Install the Get-WindowsAutopilotInfo script from PowerShell Gallery
+Install-Script -Name Get-WindowsAutopilotInfo -Force
+
+# Run the Get-WindowsAutopilotInfo script and save the output to AutopilotHWID.csv
+Get-WindowsAutopilotInfo -OutputFile AutopilotHWID.csv
+
+# Copy AutopilotHWID.csv from C:\HWID to D:\Temp, overwriting if it already exists
+Copy-Item -Path "C:\HWID\AutopilotHWID.csv" -Destination "D:\Temp" -Force
+
+
+---------------------------------------------------------------------------------------------
+
+# System Information Collector
+
+# Get operating system details
+$osDetails = Get-CimInstance Win32_OperatingSystem
+
+# Get hardware specifications
+$hardwareInfo = Get-CimInstance Win32_ComputerSystem
+
+# Get network configuration
+$networkInfo = Get-CimInstance Win32_NetworkAdapterConfiguration | Where-Object { $_.IPEnabled -eq $true }
+
+# Get installed software
+$installedSoftware = Get-ItemProperty HKLM:\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\* | 
+                     Select-Object DisplayName, DisplayVersion, Publisher, InstallDate |
+                     Where-Object { $_.DisplayName -ne $null }
+
+# Display collected information
+Write-Host "Operating System Details:"
+Write-Host "  Caption: $($osDetails.Caption)"
+Write-Host "  Version: $($osDetails.Version)"
+Write-Host "  Architecture: $($osDetails.OSArchitecture)"
+Write-Host "  Manufacturer: $($osDetails.Manufacturer)"
+Write-Host ""
+
+Write-Host "Hardware Specifications:"
+Write-Host "  Manufacturer: $($hardwareInfo.Manufacturer)"
+Write-Host "  Model: $($hardwareInfo.Model)"
+Write-Host "  Total Memory (GB): $($hardwareInfo.TotalPhysicalMemory / 1GB)"
+Write-Host ""
+
+Write-Host "Network Configuration:"
+Write-Host "  IP Address: $($networkInfo.IPAddress)"
+Write-Host "  Subnet Mask: $($networkInfo.IPSubnet)"
+Write-Host ""
+
+Write-Host "Installed Software:"
+$installedSoftware | Format-Table -AutoSize
+
