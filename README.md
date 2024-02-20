@@ -4,7 +4,7 @@ This showcase is to demonstrate two scripts that would assist and streamline the
 
 First, the script used to pull the hardware ID .CSV data to manage the device via Microsoft Auto Pilot Process
 
-Second, a System information collection script for management of hardware resources(needing to upgrade RAM or SSD) and for documentation purposes.
+Second, a System information collection script for management of hardware resources (needing to upgrade RAM or SSD for example) and for documentation purposes.
 
 
 Both very helpful in the Provisioning process for an IT specialist
