@@ -6,6 +6,7 @@ First, the script used to pull the hardware ID .CSV data to manage the device vi
 
 Second, a System information collection script for management of hardware resources (needing to upgrade RAM or SSD for example) and for documentation purposes.
 
+Third, is a neat bulk printer mapping script I use when onboarding users to ensure speedy and convenient service
 
 Both very helpful in the Provisioning process for an IT specialist
 
@@ -40,4 +41,30 @@ Copy-Item -Path "C:\HWID\AutopilotHWID.csv" -Destination "D:\Temp" -Force
 
 
 ![image](https://github.com/Applepancakes/PS-Showcase/assets/158091426/1541488d-5e89-44ab-b060-a48cf83663d3)
+
+
+
+
+
+-----------------------------------------------------------------------------------------------
+
+# Bulk printer Mapping
+
+
+
+@echo off
+REM Adding multiple printers to your system
+rundll32 printui.dll,PrintUIEntry /in /n "\soflprn01\mrmit301"
+rundll32 printui.dll,PrintUIEntry /in /n "\soflprn01\mrmit302"
+rundll32 printui.dll,PrintUIEntry /in /n "\soflprn01\mrmit303"
+rundll32 printui.dll,PrintUIEntry /in /n "\soflprn01\mrmit304"
+rundll32 printui.dll,PrintUIEntry /in /n "\soflprn01\mrmit305"
+rundll32 printui.dll,PrintUIEntry /in /n "\soflprn01\mrmit306"
+
+REM Setting the first printer as the default printer (optional)
+rundll32 printui.dll,PrintUIEntry /y /n "\soflprn01\mrmit301"
+
+
+
+
 
