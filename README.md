@@ -52,16 +52,26 @@ Copy-Item -Path "C:\HWID\AutopilotHWID.csv" -Destination "D:\Temp" -Force
 
 
 
+
 @echo off
-REM Adding multiple printers to your system
+
+# Mapping multiple printers to your device via filepath
+
 rundll32 printui.dll,PrintUIEntry /in /n "\soflprn01\mrmit301"
+
 rundll32 printui.dll,PrintUIEntry /in /n "\soflprn01\mrmit302"
+
 rundll32 printui.dll,PrintUIEntry /in /n "\soflprn01\mrmit303"
+
 rundll32 printui.dll,PrintUIEntry /in /n "\soflprn01\mrmit304"
+
 rundll32 printui.dll,PrintUIEntry /in /n "\soflprn01\mrmit305"
+
 rundll32 printui.dll,PrintUIEntry /in /n "\soflprn01\mrmit306"
 
-REM Setting the first printer as the default printer (optional)
+
+# Setting the first printer as the default printer (optional)
+
 rundll32 printui.dll,PrintUIEntry /y /n "\soflprn01\mrmit301"
 
 
